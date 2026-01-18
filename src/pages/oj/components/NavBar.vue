@@ -1,7 +1,10 @@
 <template>
   <div id="header">
     <Menu theme="light" mode="horizontal" @on-select="handleRoute" :active-name="activeMenu" class="oj-menu">
-      <div class="logo"><span>{{website.website_name}}</span></div>
+      <div class="logo">
+        <img class="brand-logo" :src="brandLogoSrc" alt="logo">
+        <span>{{website.website_name}}</span>
+      </div>
       <Menu-item name="/">
         <Icon type="home"></Icon>
         {{$t('m.Home')}}
@@ -14,11 +17,11 @@
         <Icon type="trophy"></Icon>
         {{$t('m.Contests')}}
       </Menu-item>
-      <Menu-item name="/status">
+      <Menu-item name="/status" v-if="false">
         <Icon type="ios-pulse-strong"></Icon>
         {{$t('m.NavStatus')}}
       </Menu-item>
-      <Submenu name="rank">
+      <Submenu name="rank" v-if="false">
         <template slot="title">
           <Icon type="podium"></Icon>
           {{$t('m.Rank')}}
@@ -30,7 +33,7 @@
           {{$t('m.OI_Rank')}}
         </Menu-item>
       </Submenu>
-      <Submenu name="about">
+      <Submenu name="about" v-if="false">
         <template slot="title">
           <Icon type="information-circled"></Icon>
           {{$t('m.About')}}
@@ -90,6 +93,11 @@
       login,
       register
     },
+    data () {
+      return {
+        // placeholder
+      }
+    },
     mounted () {
       this.getProfile()
     },
@@ -111,6 +119,12 @@
     },
     computed: {
       ...mapGetters(['website', 'modalStatus', 'user', 'isAuthenticated', 'isAdminRole']),
+      brandLogoSrc () {
+        // Prefer env-provided URL (served from /static or CDN), fallback to bundled asset
+        const envUrl = process.env.BRAND_LOGO_URL
+        if (envUrl) return envUrl
+        return require('@/assets/logo.svg')
+      },
       // 跟随路由变化
       activeMenu () {
         return '/' + this.$route.path.split('/')[1]
@@ -148,6 +162,12 @@
       font-size: 20px;
       float: left;
       line-height: 60px;
+      .brand-logo {
+        height: 52px;
+        width: auto;
+        margin-right: 10px;
+        vertical-align: middle;
+      }
     }
 
     .drop-menu {
