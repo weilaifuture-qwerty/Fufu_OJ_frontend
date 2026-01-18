@@ -2,8 +2,6 @@
 node_modules/
 .npm-cache/
 
-# Production build
-dist/
 
 # Local env/config
 .env
